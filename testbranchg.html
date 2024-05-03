@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            position: relative;
+            overflow: hidden; /* Prevent scroll bars due to video */
+            color: #fff; /* Default text color */
+        }
+
+        #videoBackground {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        .overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .profile {
+            text-align: center;
+            display: none; /* Initially hidden */
+        }
+
+        .profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #3498db;
+            margin-bottom: 20px;
+        }
+
+        .profile h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            position: relative;
+            animation: glitch 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch {
+            0% {
+                font-family: 'Arial', sans-serif;
+            }
+            25% {
+                font-family: 'Times New Roman', serif;
+            }
+            50% {
+                font-family: 'Courier New', monospace;
+            }
+            75% {
+                font-family: 'Georgia', serif;
+            }
+            100% {
+                font-family: 'Verdana', sans-serif;
+            }
+        }
+
+        .profile p {
+            font-size: 18px;
+        }
+
+        .music-player {
+            margin-top: 20px;
+        }
+
+        .music-player button {
+            background-color: #3498db;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .music-player button:hover {
+            background-color: #2980b9;
+        }
+
+        .time-indicator {
+            font-size: 20px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .social-buttons {
+            margin-top: 20px;
+        }
+
+        .social-buttons a {
+            display: inline-block;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .social-buttons a img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .social-buttons a:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video id="videoBackground" autoplay muted loop>
+        <source src="hihihi.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Click Anywhere to Start Overlay -->
+    <div class="overlay" onclick="startMusic()">
+        Click anywhere to start
+    </div>
+
+    <div class="container">
+        <div class="profile">
+            <img src="nigas.gif" alt="Your Discord Profile Picture">
+            <h1 data-text="callmerxm">mangolover2</h1>
+            <p>"mango is fire" - pancake 2024</p>
+            <!-- Custom music player buttons -->
+            <div class="music-player">
+                <button id="playPauseBtn" onclick="playPauseAudio()">Play</button>
+            </div>
+            <!-- Social media buttons -->
+            <div class="social-buttons">
+                <a href="https://www.youtube.com/channel/UCiLKHariYhzJKcsKXH4j2xw" target="_blank"><img src="YT.png" alt="YouTube"></a>
+                <a href="https://discord.com/users/1213828233485877280" target="_blank"><img src="dc.png" alt="Discord"></a>
+                <a href="https://www.roblox.com/users/1894038421/profile" target="_blank"><img src="rbx.png" alt="Roblox"></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Embedding audio player -->
+    <audio id="myAudio" loop>
+        <source src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- JavaScript for music playback -->
+    <script>
+        var audio = document.getElementById("myAudio");
+        var playPauseBtn = document.getElementById("playPauseBtn");
+        var timeIndicator = document.createElement("div");
+        timeIndicator.className = "time-indicator";
+        document.body.appendChild(timeIndicator);
+
+        var songs = ["Whiskey Cola.mp3", "cat.mp3", "Lovely Bastards.mp3", "love sosa.mp3"]; // Add your song file names here
+        var currentSongIndex = -1;
+
+        function startMusic() {
+            document.querySelector('.overlay').classList.add('hidden'); // Hide overlay
+            document.querySelector('.profile').style.display = 'block'; // Show profile
+            playPauseAudio(); // Start music
+        }
+
+        function playPauseAudio() {
+            if (audio.paused) {
+                if (currentSongIndex === -1) {
+                    // Select a random song if it's the first time playing
+                    currentSongIndex = Math.floor(Math.random() * songs.length);
+                    audio.src = songs[currentSongIndex];
+                }
+                audio.play();
+                playPauseBtn.innerHTML = "Pause";
+            } else {
+                audio.pause();
+                playPauseBtn.innerHTML = "Play";
+            }
+        }
+
+        // Update time indicator and song name
+        audio.addEventListener("timeupdate", function() {
+            var curTime = formatTime(audio.currentTime);
+            var dur = formatTime(audio.duration);
+            var songName = currentSongIndex !== -1 ? songs[currentSongIndex] : "None";
+            timeIndicator.textContent = curTime + " / " + dur + " - Song: " + songName;
+        });
+
+        // Format time as mm:ss
+        function formatTime(time) {
+            var minutes = Math.floor(time / 60);
+            var seconds = Math.floor(time % 60);
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            return minutes + ":" + seconds;
+        }
+    </script>
+</body>
+</html>
