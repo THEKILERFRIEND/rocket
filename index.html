@@ -159,6 +159,18 @@
         .social-buttons a:hover {
             transform: scale(1.2);
         }
+	.discord-status {
+		margin-top: 20px;
+		position: relative;
+		left: 5px; /* Move 5px to the right */
+	}
+
+	.discord-status img {
+		width: auto; /* Ensure the image keeps its aspect ratio */
+		height: auto;
+		border-radius: 0; /* Remove rounded corners */
+		border: none;
+	}
     </style>
 </head>
 <body>
@@ -189,6 +201,9 @@
                 <a href="https://www.youtube.com/channel/UCiLKHariYhzJKcsKXH4j2xw" target="_blank"><img src="YT.png" alt="YouTube"></a>
                 <a href="https://pastebin.com/raw/eJ8qc673" target="_blank"><img src="dc.png" alt="Discord"></a>
                 <a href="https://www.roblox.com/users/1894038421/profile" target="_blank"><img src="rbx.png" alt="Roblox"></a>
+            </div>
+	    <div class="discord-status">
+                <img id="discordStatus" src="https://lanyard.cnrad.dev/api/1213828233485877280" alt="Discord Status">
             </div>
         </div>
     </div>
