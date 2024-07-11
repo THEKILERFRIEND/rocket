@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Keyhole Site</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            cursor: url('keycursor.png') 16 16, auto; /* Specify custom cursor with hotspot position (16x16 is center) */
+            overflow: hidden; /* Hide any overflowing content */
+        }
+
+        #container {
+            position: relative;
+            z-index: 1; /* Ensure the keyhole is above the video */
+        }
+
+        #keyhole {
+            width: 200px; /* Adjust the size of the keyhole image as needed */
+            cursor: url('keys.png') 16 16, auto; /* Set custom cursor on the keyhole */
+            transition: opacity 0.5s; /* Add a smooth transition for opacity */
+        }
+
+        #backgroundVideo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none; /* Initially hide the video */
+            z-index: 0; /* Ensure the video is below other content */
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img id="keyhole" src="keyhole.png" alt="Keyhole"> <!-- Provide the path to your keyhole image -->
+    </div>
+    <audio id="doorSound" src="door_open.mp3"></audio> <!-- Provide the path to your door opening sound -->
+    <audio id="backgroundAudio" src="haha.mp3"></audio> <!-- Provide the path to your background audio -->
+    <video id="backgroundVideo" width="800" height="450"> <!-- Adjust size as needed, but keep aspect ratio -->
+        <source src="yap.mp4" type="video/mp4"> <!-- Provide the path to your background video -->
+        Your browser does not support the video tag.
+    </video>
+    <script>
+        var keyhole = document.getElementById('keyhole');
+        var doorSound = document.getElementById('doorSound');
+        var backgroundAudio = document.getElementById('backgroundAudio');
+        var backgroundVideo = document.getElementById('backgroundVideo');
+
+        keyhole.addEventListener('click', function() {
+            // Hide the keyhole
+            keyhole.style.opacity = '0';
+            keyhole.style.pointerEvents = 'none'; // Prevent further clicks on the keyhole
+
+            // Play the door opening sound
+            doorSound.play();
+            doorSound.addEventListener('ended', function() {
+                // Play the background audio
+                backgroundAudio.play();
+
+                // Show and play the fullscreen background video
+                backgroundVideo.style.display = 'block';
+                backgroundVideo.play();
+            });
+        });
+    </script>
+</body>
+</html>
